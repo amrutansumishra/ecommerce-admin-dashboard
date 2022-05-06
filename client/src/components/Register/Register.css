@@ -1,0 +1,28 @@
+.register{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5%;
+}
+.register_content{
+    background-color: #e3e3e3;
+    padding: 30px;
+    border-radius: 5px;
+}
+.register_text{
+    font-weight: 600;
+    font-size: 1.5rem;
+    text-align: center;
+}
+.register_button{
+    padding: 10px;
+    display: block;
+    background-color: #051269;
+    color: aliceblue;
+    width: 320px;
+    margin: 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 0px;
+}

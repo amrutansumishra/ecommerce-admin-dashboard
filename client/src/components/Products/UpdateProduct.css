@@ -1,0 +1,20 @@
+.update_product{
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+}
+.product_edit_form{
+    background-color:#e3e3e3;
+    padding: 30px;
+    border-radius: 5px;
+}
+.product_update_button{
+    background-color: #051269;
+    color: aliceblue;
+    padding: 10px;
+    width: 325px;
+    margin:0 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px  solid #051269;
+}
