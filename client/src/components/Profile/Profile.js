@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import './Profile.css';
 import profile_pic from './profile_pic.png';
 const Profile=()=>{
@@ -12,7 +12,6 @@ const Profile=()=>{
     const [password,setPassword]=useState("");
     const [pass_error,setPassError] = useState(false);
     const navigate = useNavigate();
-    const params = useParams();
     useEffect(()=>{
         getUser();
         
