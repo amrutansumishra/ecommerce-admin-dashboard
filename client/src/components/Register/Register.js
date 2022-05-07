@@ -1,13 +1,39 @@
-import React,{ useState} from "react";
+import React,{useEffect, useState} from "react";
 import './Register.css';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const SignUp=()=>{
 
     const [name,setName]=useState("");
-const [email, setEmail]=useState("");
-const [phone,setPhone]=useState("");
-const [password,setPassword]=useState("");
-
+    const [email, setEmail]=useState("");
+    const [phone,setPhone]=useState("");
+    const [password,setPassword]=useState("");
+    
+    const navigate= useNavigate();
+    
+    useEffect(()=>{
+        const auth = localStorage.getItem('user');
+        if(auth){
+            navigate('/');
+        }
+    })
+    
+    const onSubmitHandler= async()=>{
+        let result =await fetch('http://localhost:5000/api/register',{
+            method:"POST",
+            body:JSON.stringify({name,email,phone,password}),
+            headers:{
+                "Content-Type":"application/json"
+            }
+        })
+        result = await result.json();
+    
+        if(result.auth){
+            console.log(result);
+            localStorage.setItem("user",JSON.stringify(result.data))
+            localStorage.setItem("token",JSON.stringify(result.auth))
+            navigate('/');
+        }
+    };
 
 
     return (
@@ -25,7 +51,7 @@ const [password,setPassword]=useState("");
                        
                     <input type="password" className="inputField" name="password" value={password} onChange={(e)=>{setPassword(e.target.value)}} placeholder="Enter password " />  
                       
-                    <input type="button" className="register_button" name="name" value="Register" />
+                    <input type="button" className="register_button" onClick={onSubmitHandler} name="name" value="Register" />
                     <div className="login_forget"><Link to="/login" >Have a account ? </Link></div>   
 
 

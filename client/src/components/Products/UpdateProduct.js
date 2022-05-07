@@ -1,29 +1,96 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import './UpdateProduct.css';
-import product_img1 from './products1.jpg';
 
 const UpdateProduct=()=>{
-    const [name,setName] = useState();
-    const [price,setPrice] = useState();
-    const [category,setCategory] = useState();
-    const [company,setCompany] = useState();
-    const [desc,setDesc] = useState();
-    const [stock,setStock] = useState();
-    const [photo,setPhoto] = useState();
-    const [error,setError] = useState();
+    const [name,setName] = useState("");
+    const [price,setPrice] = useState("");
+    const [category,setCategory] = useState("");
+    const [company,setCompany] = useState("");
+    const [desc,setDesc] = useState("");
+    const [stock,setStock] = useState("");
+    const [photo,setPhoto] = useState("");
+    const [photoChange,setPhotoChange] = useState(false);
+    const [error,setError] = useState("");
+    const navigate = useNavigate();
+    const params = useParams();
 
-    const onSubmitHandler =()=>{
-        if(!name ||!category|| !company||!price || !photo){
+    useEffect(()=>{
+        getProductDetails()
+        
+    },[])
+    
+    const getProductDetails= async ()=>{
+        let result = await fetch(`http://localhost:5000/api/product/${params.id}`,{
+            headers:{
+             authorization:"auth "+JSON.parse(localStorage.getItem('token'))
+            }
+        });
+        result = await result.json();
+        setName(result.name);
+        setPrice(result.price);
+        setCategory(result.category);
+        setDesc(result.desc);
+        setCompany(result.company);
+        setStock(result.stock);
+        setPhoto(result.image)
+    }
+    const photochange = (e)=>{
+        setPhoto(e);
+        setPhotoChange(true)
+        
+    }
+
+    const onSubmitHandler = async()=>{
+        if(!name ||!category|| !company||!price){
             setError(true);
             return false;
         }
+
+        const userId = JSON.parse(localStorage.getItem('user'))._id;
+
+        const formData = new FormData();
+
+        
+            if(photoChange){
+                formData.append('image',photo)
+            }
+            
+        
+        
+       
+        formData.append('name', name);
+        formData.append('category', category);
+        formData.append('company', company);
+        formData.append('stock', stock);
+        formData.append('price', price);
+        formData.append('desc', desc);
+        formData.append('userId', userId);
+
+                  
+        let result = await fetch(`http://localhost:5000/api/product/${params.id}`,{
+            method:"PATCH",
+            //body:JSON.stringify({name,price,category,desc,company,userId,stock}),
+            body:formData,
+            headers:{
+              //  "Content-Type":"application/json",
+                authorization:"auth "+JSON.parse(localStorage.getItem('token'))
+            }
+        })
+      // result = await result.json();
+    //    console.log(result);
+    if(result){
+        navigate('/');
+    }
+    
+        
     }
 
     return(
         <div className="update_product">
             <div className="product_add_review">
                 <div className="product_review_img">
-                    { photo?<img src={photo}  alt="product_image" />:<img src={product_img1}  alt="product_image" /> }
+                    { !photoChange? photo ?<img src={"http://localhost:5000/public/images/"+photo}  alt="product_image" />:<></>:<img src={URL.createObjectURL(photo)}  alt="product_image" /> }
                 </div>
                 
                 <div className="product_details">
@@ -48,7 +115,7 @@ const UpdateProduct=()=>{
                 </div>
             </div>
             <form className="product_edit_form">
-                <input type="file" onChange={(e)=>{setPhoto(URL.createObjectURL(e.target.files[0]))}} className="inputField" />
+                <input type="file" onChange={(e)=>{photochange(e.target.files[0])}} className="inputField" />
                 {error && !photo && <span>Please select a photo</span>}
                 <input type="text" placeholder="product name" required className="inputField" name="name" value={name} onChange={(e)=>{setName(e.target.value)}} />
                 {error && !name && <span>Enter Valid Name</span>}

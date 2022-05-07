@@ -20,8 +20,18 @@ margin : 1%;
     .product_content {
       flex: 1 48%;
     }
+  } 
+  .search_product .inputField{
+    display: block;
+    border: 1px solid rgba(5, 18, 105,0.8);
+    align-items: center;
   }
-
+  .search_product{
+    margin: auto;
+    display: block;
+    
+    
+  }
 .product_update{
     display: none;
     position: absolute;
@@ -36,7 +46,6 @@ margin : 1%;
 .product_stock{
     position: absolute;
     align-items: center;
-    right: 0;
     border-radius: 20px;
     background-color:rgba(5, 105, 67, 0.8);
     color: aliceblue;
@@ -49,7 +58,6 @@ margin : 1%;
 .product_stock_alert{
     position: absolute;
     align-items: center;
-    right: 0;
     border-radius: 20px;
     background-color:rgba(204, 4, 4, 0.8);
     color: aliceblue;
